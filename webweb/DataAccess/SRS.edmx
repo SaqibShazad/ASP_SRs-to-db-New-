@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SRSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblDD">
+          <Key>
+            <PropertyRef Name="DD_Id" />
+          </Key>
+          <Property Name="DD_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nouns" Type="varchar" MaxLength="50" />
+          <Property Name="Determinants" Type="varchar" MaxLength="50" />
+          <Property Name="Pronouns" Type="varchar" MaxLength="50" />
+          <Property Name="Verbs" Type="varchar" MaxLength="50" />
+          <Property Name="Adjectives" Type="varchar" MaxLength="50" />
+          <Property Name="Adverbs" Type="varchar" MaxLength="50" />
+          <Property Name="Articles" Type="varchar" MaxLength="50" />
+          <Property Name="Preposition" Type="varchar" MaxLength="50" />
+          <Property Name="Conjuctions" Type="varchar" MaxLength="50" />
+          <Property Name="Interjections" Type="varchar" MaxLength="50" />
+          <Property Name="ID" Type="int" />
+        </EntityType>
+        <EntityType Name="tblDD_POS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POSTagging" Type="nvarchar(max)" />
+          <Property Name="Word" Type="nvarchar(max)" />
+          <Property Name="tblPOSS" Type="int" />
+          <Property Name="tblDD" Type="int" />
+          <Property Name="createDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblParagraph">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Req_Text" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblPOSS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POSWords" Type="nvarchar(max)" />
+          <Property Name="tblWords_ID" Type="int" />
+          <Property Name="createDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblSentences">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tblParagraph_ID" Type="int" />
+          <Property Name="Sentence" Type="nvarchar(max)" />
+          <Property Name="createdDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblWords">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Word" Type="nvarchar(max)" />
+          <Property Name="tblSentences_ID" Type="int" />
+          <Property Name="createdDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_tblDD_POS_tblPOSS">
+          <End Role="tblPOSS" Type="Self.tblPOSS" Multiplicity="0..1" />
+          <End Role="tblDD_POS" Type="Self.tblDD_POS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPOSS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblDD_POS">
+              <PropertyRef Name="tblPOSS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDD_tblDD_POS">
+          <End Role="tblDD_POS" Type="Self.tblDD_POS" Multiplicity="0..1" />
+          <End Role="tblDD" Type="Self.tblDD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDD_POS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblDD">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPOSS_tblWords">
+          <End Role="tblWords" Type="Self.tblWords" Multiplicity="0..1" />
+          <End Role="tblPOSS" Type="Self.tblPOSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblWords">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblPOSS">
+              <PropertyRef Name="tblWords_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSentences_tblParagraph">
+          <End Role="tblParagraph" Type="Self.tblParagraph" Multiplicity="0..1" />
+          <End Role="tblSentences" Type="Self.tblSentences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblParagraph">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblSentences">
+              <PropertyRef Name="tblParagraph_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblWords_tblSentences">
+          <End Role="tblSentences" Type="Self.tblSentences" Multiplicity="0..1" />
+          <End Role="tblWords" Type="Self.tblWords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSentences">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblWords">
+              <PropertyRef Name="tblSentences_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SRSDBModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblDD" EntityType="Self.tblDD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblDD_POS" EntityType="Self.tblDD_POS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblParagraph" EntityType="Self.tblParagraph" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPOSS" EntityType="Self.tblPOSS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSentences" EntityType="Self.tblSentences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblWords" EntityType="Self.tblWords" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblDD_POS_tblPOSS" Association="Self.FK_tblDD_POS_tblPOSS">
+            <End Role="tblPOSS" EntitySet="tblPOSS" />
+            <End Role="tblDD_POS" EntitySet="tblDD_POS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDD_tblDD_POS" Association="Self.FK_tblDD_tblDD_POS">
+            <End Role="tblDD_POS" EntitySet="tblDD_POS" />
+            <End Role="tblDD" EntitySet="tblDD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPOSS_tblWords" Association="Self.FK_tblPOSS_tblWords">
+            <End Role="tblWords" EntitySet="tblWords" />
+            <End Role="tblPOSS" EntitySet="tblPOSS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSentences_tblParagraph" Association="Self.FK_tblSentences_tblParagraph">
+            <End Role="tblParagraph" EntitySet="tblParagraph" />
+            <End Role="tblSentences" EntitySet="tblSentences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblWords_tblSentences" Association="Self.FK_tblWords_tblSentences">
+            <End Role="tblSentences" EntitySet="tblSentences" />
+            <End Role="tblWords" EntitySet="tblWords" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SRSDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SRSDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="SRSDBModel.sysdiagram" />
+          <EntitySet Name="tblParagraphs" EntityType="SRSDBModel.tblParagraph" />
+          <EntitySet Name="tblSentences" EntityType="SRSDBModel.tblSentence" />
+          <AssociationSet Name="FK_tblSentences_tblParagraph" Association="SRSDBModel.FK_tblSentences_tblParagraph">
+            <End Role="tblParagraph" EntitySet="tblParagraphs" />
+            <End Role="tblSentence" EntitySet="tblSentences" />
+          </AssociationSet>
+          <EntitySet Name="tblWords" EntityType="SRSDBModel.tblWord" />
+          <AssociationSet Name="FK_tblWords_tblSentences" Association="SRSDBModel.FK_tblWords_tblSentences">
+            <End Role="tblSentence" EntitySet="tblSentences" />
+            <End Role="tblWord" EntitySet="tblWords" />
+          </AssociationSet>
+          <EntitySet Name="tblPOSSes" EntityType="SRSDBModel.tblPOSS" />
+          <AssociationSet Name="FK_tblPOSS_tblWords" Association="SRSDBModel.FK_tblPOSS_tblWords">
+            <End Role="tblWord" EntitySet="tblWords" />
+            <End Role="tblPOSS" EntitySet="tblPOSSes" />
+          </AssociationSet>
+          <EntitySet Name="tblDD_POS" EntityType="SRSDBModel.tblDD_POS" />
+          <AssociationSet Name="FK_tblDD_POS_tblPOSS" Association="SRSDBModel.FK_tblDD_POS_tblPOSS">
+            <End Role="tblPOSS" EntitySet="tblPOSSes" />
+            <End Role="tblDD_POS" EntitySet="tblDD_POS" />
+          </AssociationSet>
+          <EntitySet Name="tblDDs" EntityType="SRSDBModel.tblDD" />
+          <AssociationSet Name="FK_tblDD_tblDD_POS" Association="SRSDBModel.FK_tblDD_tblDD_POS">
+            <End Role="tblDD_POS" EntitySet="tblDD_POS" />
+            <End Role="tblDD" EntitySet="tblDDs" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tblParagraph">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Req_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblSentences" Relationship="SRSDBModel.FK_tblSentences_tblParagraph" FromRole="tblParagraph" ToRole="tblSentence" />
+        </EntityType>
+        <EntityType Name="tblSentence">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tblParagraph_ID" Type="Int32" />
+          <Property Name="Sentence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="createdDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblParagraph" Relationship="SRSDBModel.FK_tblSentences_tblParagraph" FromRole="tblSentence" ToRole="tblParagraph" />
+          <NavigationProperty Name="tblWords" Relationship="SRSDBModel.FK_tblWords_tblSentences" FromRole="tblSentence" ToRole="tblWord" />
+        </EntityType>
+        <Association Name="FK_tblSentences_tblParagraph">
+          <End Type="SRSDBModel.tblParagraph" Role="tblParagraph" Multiplicity="0..1" />
+          <End Type="SRSDBModel.tblSentence" Role="tblSentence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblParagraph">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblSentence">
+              <PropertyRef Name="tblParagraph_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblWord">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Word" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tblSentences_ID" Type="Int32" />
+          <Property Name="createdDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblSentence" Relationship="SRSDBModel.FK_tblWords_tblSentences" FromRole="tblWord" ToRole="tblSentence" />
+          <NavigationProperty Name="tblPOSSes" Relationship="SRSDBModel.FK_tblPOSS_tblWords" FromRole="tblWord" ToRole="tblPOSS" />
+        </EntityType>
+        <Association Name="FK_tblWords_tblSentences">
+          <End Type="SRSDBModel.tblSentence" Role="tblSentence" Multiplicity="0..1" />
+          <End Type="SRSDBModel.tblWord" Role="tblWord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSentence">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblWord">
+              <PropertyRef Name="tblSentences_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblPOSS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POSWords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tblWords_ID" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblWord" Relationship="SRSDBModel.FK_tblPOSS_tblWords" FromRole="tblPOSS" ToRole="tblWord" />
+          <NavigationProperty Name="tblDD_POS" Relationship="SRSDBModel.FK_tblDD_POS_tblPOSS" FromRole="tblPOSS" ToRole="tblDD_POS" />
+        </EntityType>
+        <Association Name="FK_tblPOSS_tblWords">
+          <End Type="SRSDBModel.tblWord" Role="tblWord" Multiplicity="0..1" />
+          <End Type="SRSDBModel.tblPOSS" Role="tblPOSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblWord">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblPOSS">
+              <PropertyRef Name="tblWords_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblDD_POS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POSTagging" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Word" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tblPOSS" Type="Int32" />
+          <Property Name="tblDD" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblPOSS1" Relationship="SRSDBModel.FK_tblDD_POS_tblPOSS" FromRole="tblDD_POS" ToRole="tblPOSS" />
+          <NavigationProperty Name="tblDDs" Relationship="SRSDBModel.FK_tblDD_tblDD_POS" FromRole="tblDD_POS" ToRole="tblDD" />
+          </EntityType>
+        <Association Name="FK_tblDD_POS_tblPOSS">
+          <End Type="SRSDBModel.tblPOSS" Role="tblPOSS" Multiplicity="0..1" />
+          <End Type="SRSDBModel.tblDD_POS" Role="tblDD_POS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPOSS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblDD_POS">
+              <PropertyRef Name="tblPOSS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblDD">
+          <Key>
+            <PropertyRef Name="DD_Id" />
+          </Key>
+          <Property Name="DD_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nouns" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Determinants" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pronouns" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Verbs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Adjectives" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Adverbs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Articles" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Preposition" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Conjuctions" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Interjections" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" />
+          <NavigationProperty Name="tblDD_POS" Relationship="SRSDBModel.FK_tblDD_tblDD_POS" FromRole="tblDD" ToRole="tblDD_POS" />
+        </EntityType>
+        <Association Name="FK_tblDD_tblDD_POS">
+          <End Type="SRSDBModel.tblDD_POS" Role="tblDD_POS" Multiplicity="0..1" />
+          <End Type="SRSDBModel.tblDD" Role="tblDD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDD_POS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblDD">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SRSDBModelStoreContainer" CdmEntityContainer="SRSDBEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SRSDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblParagraphs">
+            <EntityTypeMapping TypeName="SRSDBModel.tblParagraph">
+              <MappingFragment StoreEntitySet="tblParagraph">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Req_Text" ColumnName="Req_Text" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSentences">
+            <EntityTypeMapping TypeName="SRSDBModel.tblSentence">
+              <MappingFragment StoreEntitySet="tblSentences">
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="Sentence" ColumnName="Sentence" />
+                <ScalarProperty Name="tblParagraph_ID" ColumnName="tblParagraph_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblWords">
+            <EntityTypeMapping TypeName="SRSDBModel.tblWord">
+              <MappingFragment StoreEntitySet="tblWords">
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="tblSentences_ID" ColumnName="tblSentences_ID" />
+                <ScalarProperty Name="Word" ColumnName="Word" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPOSSes">
+            <EntityTypeMapping TypeName="SRSDBModel.tblPOSS">
+              <MappingFragment StoreEntitySet="tblPOSS">
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="tblWords_ID" ColumnName="tblWords_ID" />
+                <ScalarProperty Name="POSWords" ColumnName="POSWords" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDD_POS">
+            <EntityTypeMapping TypeName="SRSDBModel.tblDD_POS">
+              <MappingFragment StoreEntitySet="tblDD_POS">
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="tblDD" ColumnName="tblDD" />
+                <ScalarProperty Name="tblPOSS" ColumnName="tblPOSS" />
+                <ScalarProperty Name="Word" ColumnName="Word" />
+                <ScalarProperty Name="POSTagging" ColumnName="POSTagging" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDDs">
+            <EntityTypeMapping TypeName="SRSDBModel.tblDD">
+              <MappingFragment StoreEntitySet="tblDD">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Interjections" ColumnName="Interjections" />
+                <ScalarProperty Name="Conjuctions" ColumnName="Conjuctions" />
+                <ScalarProperty Name="Preposition" ColumnName="Preposition" />
+                <ScalarProperty Name="Articles" ColumnName="Articles" />
+                <ScalarProperty Name="Adverbs" ColumnName="Adverbs" />
+                <ScalarProperty Name="Adjectives" ColumnName="Adjectives" />
+                <ScalarProperty Name="Verbs" ColumnName="Verbs" />
+                <ScalarProperty Name="Pronouns" ColumnName="Pronouns" />
+                <ScalarProperty Name="Determinants" ColumnName="Determinants" />
+                <ScalarProperty Name="Nouns" ColumnName="Nouns" />
+                <ScalarProperty Name="DD_Id" ColumnName="DD_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

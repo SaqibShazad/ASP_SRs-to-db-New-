@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "SSS";
+}
+<script src="JS/JavaScript.js"></script>
+<script type="text/javascript">
+        function SplitString() {
+
+            var inputString = document.getElementById("TextArea1").value;
+
+            var result = inputString.split('.');
+            if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+
+                    document.getElementById("TextArea").value += result[i] + "\r\n";
+
+                }
+            }
+
+        }
+
+        </script>
+

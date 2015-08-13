@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IRtbl">
+          <Key>
+            <PropertyRef Name="Req_Id" />
+          </Key>
+          <Property Name="Req_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Input_Req" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="SSTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SentencesSegmentation" Type="varchar(max)" />
+          <Property Name="Req_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="TokenizationTable">
+          <Key>
+            <PropertyRef Name="Token_Id" />
+          </Key>
+          <Property Name="Token_Id" Type="int" Nullable="false" />
+          <Property Name="Tokenization" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_A">
+          <End Role="IRtbl" Type="Self.IRtbl" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SSTable" Type="Self.SSTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IRtbl">
+              <PropertyRef Name="Req_Id" />
+            </Principal>
+            <Dependent Role="SSTable">
+              <PropertyRef Name="Req_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model1StoreContainer">
+          <EntitySet Name="IRtbl" EntityType="Self.IRtbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SSTable" EntityType="Self.SSTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TokenizationTable" EntityType="Self.TokenizationTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_A" Association="Self.FK_dbo_A">
+            <End Role="IRtbl" EntitySet="IRtbl" />
+            <End Role="SSTable" EntitySet="SSTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="IRtbl">
+          <Key>
+            <PropertyRef Name="Req_Id" />
+          </Key>
+          <Property Name="Req_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Input_Req" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SSTables" Relationship="Self.FK_dbo_A" FromRole="IRtbl" ToRole="SSTable" />
+        </EntityType>
+        <EntityType Name="SSTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SentencesSegmentation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Req_Id" Type="Int32" />
+          <NavigationProperty Name="IRtbl" Relationship="Self.FK_dbo_A" FromRole="SSTable" ToRole="IRtbl" />
+        </EntityType>
+        <EntityType Name="TokenizationTable">
+          <Key>
+            <PropertyRef Name="Token_Id" />
+          </Key>
+          <Property Name="Token_Id" Type="Int32" Nullable="false" />
+          <Property Name="Tokenization" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_dbo_A">
+          <End Role="IRtbl" Type="Self.IRtbl" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SSTable" Type="Self.SSTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IRtbl">
+              <PropertyRef Name="Req_Id" />
+            </Principal>
+            <Dependent Role="SSTable">
+              <PropertyRef Name="Req_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities10" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IRtbls" EntityType="Self.IRtbl" />
+          <EntitySet Name="SSTables" EntityType="Self.SSTable" />
+          <EntitySet Name="TokenizationTables" EntityType="Self.TokenizationTable" />
+          <AssociationSet Name="FK_dbo_A" Association="Self.FK_dbo_A">
+            <End Role="IRtbl" EntitySet="IRtbls" />
+            <End Role="SSTable" EntitySet="SSTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Entities10">
+          <EntitySetMapping Name="IRtbls">
+            <EntityTypeMapping TypeName="Model1.IRtbl">
+              <MappingFragment StoreEntitySet="IRtbl">
+                <ScalarProperty Name="Req_Id" ColumnName="Req_Id" />
+                <ScalarProperty Name="Input_Req" ColumnName="Input_Req" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SSTables">
+            <EntityTypeMapping TypeName="Model1.SSTable">
+              <MappingFragment StoreEntitySet="SSTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SentencesSegmentation" ColumnName="SentencesSegmentation" />
+                <ScalarProperty Name="Req_Id" ColumnName="Req_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TokenizationTables">
+            <EntityTypeMapping TypeName="Model1.TokenizationTable">
+              <MappingFragment StoreEntitySet="TokenizationTable">
+                <ScalarProperty Name="Token_Id" ColumnName="Token_Id" />
+                <ScalarProperty Name="Tokenization" ColumnName="Tokenization" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

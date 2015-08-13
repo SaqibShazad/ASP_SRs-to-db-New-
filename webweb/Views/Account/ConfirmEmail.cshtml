@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+@Styles.Render("~/Content/style.css")
+@Scripts.Render("~/bundles/modernizr")
+<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Thank you for registration. Check your email for Confirmation. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")

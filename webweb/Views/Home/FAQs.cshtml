@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "FAQs";
+}
+@Styles.Render("~/Content/style.css")
+@Scripts.Render("~/bundles/modernizr")
+
+<h2>FAQs</h2>
+
+<section id="faq">
+
+    <div class="container">
+
+
+
+        <div class="row">
+
+            <div class="col-md-10 col-md-offset-1 mar-b-30">
+
+                <div id="heading">
+                    <h1 class="wow flipInX">F.A.Q.</h1>
+                    <p class="lead wow fadeIn">You have a question? Someone else might have had the exact same one. Let's find out!</p>
+                </div>
+
+                <!--////////// Accordion Toggle //////////-->
+                <div class="panel-group wow fadeInUp" id="accordion" data-wow-duration="2s">
+
+                    <!-- PANEL 1 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Is it FREE?
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>Yup! This site is a free service - enjoy!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 2 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    Can I buy a private copy?
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>Universities, businesses and some analysts may want their own private installation of yUML on their own computers.  </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 3 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    Why should I use this tool?
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>This tool saves you time. It's designed to for those that like to create small database diagrams and sketches.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 4 -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    Which types of ERD notaion this tool supported?
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>Right now this tool supports only Crows foot notaion. Because this notaion is popular among most of the projects. So that we started from this notation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                    Is there any restriction to use this tool?
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseFive" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>
+                                    Absolutely! every tool doen't do all the fuctions. In this tool You ahve to follow the rules that are
+                                    <li>Every single sentence should have dot in the end</li>
+                                    <li>There should be a limit of sentences i.e maximum 25 - 30</li>
+                                    <li>Sentences should be clear and concise </li>
+                                    <li>The results will be more like accurate but we can not grauntee of full acurate output diagram</li>
+
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-faq">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                    Is this template responsive?
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseSix" class="panel-collapse collapse">
+                            <div class="panel-body panel-faq">
+                                <p>Absolutely! As shown with a few examples within this demo, you can see this template is fully responsive.This is built on top of Responsive Twitter Bootstrap 3 framework.Enjoy!!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div><!-- /col-md-10 -->
+
+
+        </div>
+    </div>
+
+</section>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+
